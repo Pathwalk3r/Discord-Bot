@@ -48,10 +48,13 @@ def load_config():
     # Prefer DB-backed configs when DATABASE_URL is set
     if os.environ.get("DATABASE_URL"):
         try:
-            from . import db as _db
+            import db as _db
         except Exception:
-            # fallback to filesystem if DB import fails
-            _db = None
+            try:
+                from . import db as _db
+            except Exception:
+                # fallback to filesystem if DB import fails
+                _db = None
 
         if _db:
             try:
@@ -88,12 +91,20 @@ def load_guild_config(guild_id: str, guild_name: str | None = None):
     # Try DB first when available
     if os.environ.get("DATABASE_URL"):
         try:
-            from . import db as _db
-            cfg = _db.load_guild_config(str(guild_id))
-            if cfg is not None:
-                return cfg
-        except Exception as e:
-            print("DB load_guild_config failed:", e)
+            import db as _db
+        except Exception:
+            try:
+                from . import db as _db
+            except Exception:
+                _db = None
+
+        if _db:
+            try:
+                cfg = _db.load_guild_config(str(guild_id))
+                if cfg is not None:
+                    return cfg
+            except Exception as e:
+                print("DB load_guild_config failed:", e)
 
     ensure_configs_dir()
     gid = str(guild_id)
@@ -127,11 +138,19 @@ def save_guild_config(guild_id: str, cfg: dict):
     # Prefer DB when DATABASE_URL provided
     if os.environ.get("DATABASE_URL"):
         try:
-            from . import db as _db
-            _db.save_guild_config(str(guild_id), cfg)
-            return
-        except Exception as e:
-            print("DB save_guild_config failed:", e)
+            import db as _db
+        except Exception:
+            try:
+                from . import db as _db
+            except Exception:
+                _db = None
+
+        if _db:
+            try:
+                _db.save_guild_config(str(guild_id), cfg)
+                return
+            except Exception as e:
+                print("DB save_guild_config failed:", e)
 
     ensure_configs_dir()
     gid = str(guild_id)
@@ -160,11 +179,19 @@ def save_config(config):
     # Prefer DB when DATABASE_URL provided
     if os.environ.get("DATABASE_URL"):
         try:
-            from . import db as _db
-            _db.save_config(config)
-            return
-        except Exception as e:
-            print("DB save_config failed:", e)
+            import db as _db
+        except Exception:
+            try:
+                from . import db as _db
+            except Exception:
+                _db = None
+
+        if _db:
+            try:
+                _db.save_config(config)
+                return
+            except Exception as e:
+                print("DB save_config failed:", e)
 
     ensure_configs_dir()
 
