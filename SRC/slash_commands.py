@@ -476,7 +476,7 @@ class VCSlashCommands(commands.Cog):
             f"Cleared all forum threads",
             ephemeral=True
         )
-        print(f"Cleanup used by {interaction.user} in {interaction.guild.name} server. Deleted channels: {deleted_channels}, Deleted roles: {deleted_roles}")
+        print(f"Cleanup command used by {interaction.user} in {interaction.guild.name} server. Deleted channels: {deleted_channels}, Deleted roles: {deleted_roles}")
 
     # ------------------------------
     # Check verified command
@@ -590,7 +590,7 @@ class VCSlashCommands(commands.Cog):
                 ephemeral=True
             )
 
-        print(f"command used by {interaction.user} in {interaction.guild.name} server")
+        print(f"Check_verify command used by {interaction.user} in {interaction.guild.name} server")
 
     @app_commands.command(
         name="setup_verify",
@@ -651,6 +651,18 @@ class VCSlashCommands(commands.Cog):
             ephemeral=True
         )
 
+        await view.wait()
+        verified_users = getattr(view, "selected_users", []) or []
+
+        if not verified_users:
+            print(f"{interaction.user} completed verification UI with no selected users in {interaction.guild.name}")
+        else:
+            try:
+                users_text = ", ".join(u for u in verified_users)
+            except Exception:
+                users_text = ", ".join(getattr(u, "name", str(u)) for u in verified_users)
+            print(f"{interaction.user} has verified: {users_text} in {interaction.guild.name}")
+
     @app_commands.command(
         name="remove_verify",
         description="Removes the verified role from a user"
@@ -680,6 +692,17 @@ class VCSlashCommands(commands.Cog):
             view=view,
             ephemeral=True
         )
+        await view.wait()
+        unverified_users = getattr(view, "selected_users", []) or []
+
+        if not unverified_users:
+            print(f"{interaction.user} completed unverification UI with no selected users in {interaction.guild.name}")
+        else:
+            try:
+                users_text = ", ".join(u for u in unverified_users)
+            except Exception:
+                users_text = ", ".join(getattr(u, "name", str(u)) for u in unverified_users)
+            print(f"{interaction.user} has unverified: {users_text} in {interaction.guild.name}")
 
     # ------------------------------
     # Send Thread Messages Command
