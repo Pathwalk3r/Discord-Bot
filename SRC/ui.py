@@ -199,6 +199,9 @@ class VerifyUserView(discord.ui.View):
 
         self.remove_guest_role = False
 
+        self.selected_users: list[discord.Member] = []
+        self.verified_roles: list[discord.Role] = []
+
         self.verified_role_ids = set(config.get("verified_roles", []))
         self.allowed_role_ids = set(config.get("allowed_roles", []))
         self.guest_role_id = config.get("guest_role")
@@ -340,6 +343,9 @@ class RemoveVerifyView(discord.ui.View):
         self.config = config
 
         self.add_guest_role = False
+
+        self.selected_users: list[discord.Member] = []
+        self.verified_roles: list[discord.Role] = []
 
         self.verified_role_ids = set(config.get("verified_roles", []))
         self.allowed_role_ids = set(config.get("allowed_roles", []))
