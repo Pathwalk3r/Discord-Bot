@@ -100,7 +100,7 @@ class GuestRoleSelect(discord.ui.Select):
 
 class SetupVerifyView(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=180)
+        super().__init__(timeout=300)
 
         self.verified_roles = []
         self.allowed_roles = []
@@ -191,7 +191,7 @@ class SetupVerifyView(discord.ui.View):
 
 class VerifyUserView(discord.ui.View):
     def __init__(self, invoker, guild, config: dict):
-        super().__init__(timeout=180)
+        super().__init__(timeout=300)
 
         self.invoker = invoker
         self.guild = guild
@@ -336,7 +336,7 @@ class VerifyUserView(discord.ui.View):
 
 class RemoveVerifyView(discord.ui.View):
     def __init__(self, invoker, guild, config: dict):
-        super().__init__(timeout=180)
+        super().__init__(timeout=300)
 
         self.invoker = invoker
         self.guild = guild
@@ -644,7 +644,7 @@ class ThreadMessageView(discord.ui.View):
 
 class SetupRaidView(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=180)
+        super().__init__(timeout=300)
         self.raid_lead_role = None
         self.raid_backup_role = None
         self.raid_scout_role = None
